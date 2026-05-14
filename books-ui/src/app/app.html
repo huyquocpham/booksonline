@@ -31,11 +31,13 @@
 
       <form class="book-form" [formGroup]="form" (ngSubmit)="submit()">
         <label class="field" *ngFor="let column of searchableColumns(); trackBy: trackColumn">
-          <span>{{ column.name }}</span>
+          <span>{{ column.name }}<small *ngIf="isRequiredColumn(column)"> *</small></span>
           <input
             [type]="isNumberColumn(column) ? 'number' : 'text'"
             [formControlName]="column.name"
-            [placeholder]="'Enter ' + column.name" />
+            [placeholder]="'Enter ' + column.name"
+            [class.invalid-field]="hasFieldError(column.name)" />
+          <small class="field-error" *ngIf="hasFieldError(column.name)">{{ fieldErrorMessage(column) }}</small>
         </label>
 
         <div class="actions">

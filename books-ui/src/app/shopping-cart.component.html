@@ -4,7 +4,7 @@
       <p class="cart-eyebrow">Shopping Cart</p>
       <h2>{{ itemCount() }} item{{ itemCount() === 1 ? '' : 's' }}</h2>
     </div>
-    <div class="cart-total">\${{ totalAmount().toFixed(2) }}</div>
+    <div class="cart-total">${{ totalAmount().toFixed(2) }}</div>
   </div>
 
   <p class="cart-error" *ngIf="errorMessage">{{ errorMessage }}</p>
@@ -19,10 +19,10 @@
       <div class="cart-item-copy">
         <strong>{{ item.title }}</strong>
         <span>ISBN {{ item.isbn }}</span>
-        <span>{{ item.quantity }} x \${{ item.unitPrice.toFixed(2) }}</span>
+        <span>{{ item.quantity }} x ${{ item.unitPrice.toFixed(2) }}</span>
       </div>
       <div class="cart-item-actions">
-        <span class="line-total">\${{ item.lineTotal.toFixed(2) }}</span>
+        <span class="line-total">${{ item.lineTotal.toFixed(2) }}</span>
         <button class="cart-remove" type="button" (click)="remove.emit(item.bookId)">Remove</button>
       </div>
     </div>

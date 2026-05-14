@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
 
 import { BookApi, BookColumnMetadata, BookRecord } from './book-api';
@@ -46,6 +47,10 @@ export class App {
     return column.primaryKey;
   }
 
+  protected isRequiredColumn(column: BookColumnMetadata): boolean {
+    return !column.primaryKey && !column.nullable;
+  }
+
   protected isNumberColumn(column: BookColumnMetadata): boolean {
     const type = column.jdbcType.toLowerCase();
     return ['int', 'serial', 'numeric', 'decimal', 'real', 'double', 'float'].some((token) =>
@@ -70,6 +75,12 @@ export class App {
   }
 
   protected submit(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.errorMessage.set('Fill in all required fields before saving.');
+      return;
+    }
+
     const payload = this.buildPayload();
     this.isSaving.set(true);
     this.errorMessage.set('');
@@ -85,8 +96,8 @@ export class App {
           this.resetForm();
           this.loadBooks();
         },
-        error: () => {
-          this.errorMessage.set('Book save failed. Check backend availability and field values.');
+        error: (error: HttpErrorResponse) => {
+          this.errorMessage.set(this.toSaveErrorMessage(error));
         }
       });
   }
@@ -168,6 +179,24 @@ export class App {
     return value == null ? '' : String(value);
   }
 
+  protected hasFieldError(columnName: string): boolean {
+    const control = this.form.controls[columnName];
+    return !!control && control.invalid && (control.dirty || control.touched);
+  }
+
+  protected fieldErrorMessage(column: BookColumnMetadata): string {
+    const control = this.form.controls[column.name];
+    if (!control || !control.errors) {
+      return '';
+    }
+
+    if (control.errors['required']) {
+      return `${column.name} is required.`;
+    }
+
+    return 'Invalid value.';
+  }
+
   private loadPage(): void {
     this.loadCart();
     this.bookApi.getColumns().subscribe({
@@ -213,7 +242,10 @@ export class App {
   private buildForm(columns: BookColumnMetadata[]): void {
     for (const column of columns) {
       if (!column.primaryKey) {
-        this.form.addControl(column.name, new FormControl(''));
+        this.form.addControl(
+          column.name,
+          new FormControl('', column.nullable ? [] : [Validators.required])
+        );
       }
     }
   }
@@ -233,5 +265,38 @@ export class App {
 
   private primaryKeyValue(book: BookRecord): unknown {
     return book[this.columns().find((column) => column.primaryKey)?.name ?? 'id'];
+  }
+
+  private toSaveErrorMessage(error: HttpErrorResponse): string {
+    const backendMessage = this.extractBackendMessage(error.error);
+    if (backendMessage) {
+      return `Book save failed: ${backendMessage}`;
+    }
+
+    if (error.status === 0) {
+      return 'Book save failed. Catalog service is unreachable.';
+    }
+
+    return `Book save failed with status ${error.status}.`;
+  }
+
+  private extractBackendMessage(errorBody: unknown): string | null {
+    if (typeof errorBody === 'string' && errorBody.trim() !== '') {
+      return errorBody.trim();
+    }
+
+    if (errorBody && typeof errorBody === 'object') {
+      const message = (errorBody as { message?: unknown }).message;
+      if (typeof message === 'string' && message.trim() !== '') {
+        return message.trim();
+      }
+
+      const error = (errorBody as { error?: unknown }).error;
+      if (typeof error === 'string' && error.trim() !== '') {
+        return error.trim();
+      }
+    }
+
+    return null;
   }
 } // End of App component
