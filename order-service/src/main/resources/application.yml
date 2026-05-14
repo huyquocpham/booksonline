@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:192.168.1.88}:${DB_PORT:5435}/${DB_NAME:bookstoreonline}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:All4one7!}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:192.168.1.88:9092}
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP:order-service}
+      auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: com.booksonline.events
+    producer:
+      properties:
+        spring.json.add.type.headers: false
+
+server:
+  port: ${SERVER_PORT:8083}
+
+app:
+  kafka:
+    topics:
+      cart-checkout: ${KAFKA_CART_CHECKOUT_TOPIC:cart.checkout}
+      order-created: ${KAFKA_ORDER_CREATED_TOPIC:order.created}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus

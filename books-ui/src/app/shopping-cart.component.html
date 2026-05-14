@@ -1,0 +1,38 @@
+<aside class="cart-card">
+  <div class="cart-header">
+    <div>
+      <p class="cart-eyebrow">Shopping Cart</p>
+      <h2>{{ itemCount() }} item{{ itemCount() === 1 ? '' : 's' }}</h2>
+    </div>
+    <div class="cart-total">\${{ totalAmount().toFixed(2) }}</div>
+  </div>
+
+  <p class="cart-error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  <p class="cart-loading" *ngIf="isLoading">Updating cart...</p>
+
+  <div class="cart-empty" *ngIf="!isLoading && (!cart || cart.items.length === 0)">
+    Add a book to start the cart.
+  </div>
+
+  <div class="cart-items" *ngIf="cart as activeCart">
+    <div class="cart-item" *ngFor="let item of activeCart.items; trackBy: trackItem">
+      <div class="cart-item-copy">
+        <strong>{{ item.title }}</strong>
+        <span>ISBN {{ item.isbn }}</span>
+        <span>{{ item.quantity }} x \${{ item.unitPrice.toFixed(2) }}</span>
+      </div>
+      <div class="cart-item-actions">
+        <span class="line-total">\${{ item.lineTotal.toFixed(2) }}</span>
+        <button class="cart-remove" type="button" (click)="remove.emit(item.bookId)">Remove</button>
+      </div>
+    </div>
+  </div>
+
+  <button
+    class="checkout-button"
+    type="button"
+    [disabled]="isLoading || !cart || cart.items.length === 0"
+    (click)="checkout.emit()">
+    Checkout
+  </button>
+</aside>

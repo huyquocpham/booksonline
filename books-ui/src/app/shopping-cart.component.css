@@ -1,0 +1,128 @@
+.cart-card {
+  backdrop-filter: blur(18px);
+  background: rgba(14, 22, 33, 0.78);
+  border: 1px solid rgba(250, 246, 240, 0.14);
+  border-radius: 24px;
+  box-shadow: 0 16px 50px rgba(4, 10, 20, 0.35);
+  min-width: 320px;
+  padding: 20px;
+}
+
+.cart-header {
+  align-items: start;
+  display: flex;
+  gap: 18px;
+  justify-content: space-between;
+}
+
+.cart-eyebrow {
+  color: #f9c784;
+  font-size: 0.75rem;
+  letter-spacing: 0.18rem;
+  margin: 0 0 6px;
+  text-transform: uppercase;
+}
+
+h2,
+p {
+  margin: 0;
+}
+
+h2 {
+  font-size: 1.4rem;
+}
+
+.cart-total {
+  background: rgba(240, 138, 75, 0.14);
+  border: 1px solid rgba(240, 138, 75, 0.24);
+  border-radius: 999px;
+  color: #ffd59b;
+  font-weight: 700;
+  padding: 10px 14px;
+}
+
+.cart-error,
+.cart-loading,
+.cart-empty {
+  color: #d9dee8;
+  margin-top: 16px;
+}
+
+.cart-error {
+  color: #ffd5d5;
+}
+
+.cart-items {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+  max-height: 320px;
+  overflow: auto;
+}
+
+.cart-item {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 14px;
+}
+
+.cart-item-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.cart-item-copy strong {
+  color: #fff8eb;
+}
+
+.cart-item-copy span,
+.line-total {
+  color: #c3ccd8;
+  font-size: 0.92rem;
+}
+
+.cart-item-actions {
+  align-items: end;
+  display: grid;
+  gap: 8px;
+  justify-items: end;
+}
+
+.cart-remove,
+.checkout-button {
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 10px 14px;
+}
+
+.cart-remove {
+  background: rgba(190, 58, 58, 0.22);
+  color: #ffd5d5;
+}
+
+.checkout-button {
+  background: linear-gradient(135deg, #f08a4b, #eec643);
+  color: #171717;
+  margin-top: 18px;
+  width: 100%;
+}
+
+.checkout-button:disabled,
+.cart-remove:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+@media (max-width: 980px) {
+  .cart-card {
+    min-width: 0;
+    width: 100%;
+  }
+}
