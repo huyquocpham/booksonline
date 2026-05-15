@@ -1,0 +1,27 @@
+<div class="auth-shell">
+  <section class="auth-card">
+    <p class="eyebrow">Books Online</p>
+    <h1>Sign in</h1>
+    <p class="lede">Access the catalog, manage inventory, and keep the cart workflow behind an authenticated entry point.</p>
+
+    <p class="error" *ngIf="errorMessage()">{{ errorMessage() }}</p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <label>
+        <span>Email</span>
+        <input type="email" formControlName="email" [class.invalid]="isInvalid('email')" placeholder="name@example.com" />
+        <small class="field-error" *ngIf="isInvalid('email')">Enter a valid email address.</small>
+      </label>
+
+      <label>
+        <span>Password</span>
+        <input type="password" formControlName="password" [class.invalid]="isInvalid('password')" placeholder="Enter your password" />
+        <small class="field-error" *ngIf="isInvalid('password')">Password is required.</small>
+      </label>
+
+      <button type="submit" [disabled]="isSubmitting()">{{ isSubmitting() ? 'Signing in...' : 'Login' }}</button>
+    </form>
+
+    <p class="auth-footer">No account yet? <a routerLink="/register">Create one</a></p>
+  </section>
+</div>

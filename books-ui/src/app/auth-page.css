@@ -1,0 +1,136 @@
+:host {
+  color: #f8f1df;
+  display: block;
+  font-family: Georgia, serif;
+  min-height: 100vh;
+}
+
+.auth-shell {
+  align-items: center;
+  background:
+    radial-gradient(circle at top right, rgba(238, 198, 67, 0.18), transparent 24%),
+    radial-gradient(circle at bottom left, rgba(40, 106, 115, 0.26), transparent 28%),
+    linear-gradient(145deg, #0f1724, #18273a 55%, #101b27);
+  display: grid;
+  min-height: 100vh;
+  padding: 32px;
+}
+
+.auth-card {
+  backdrop-filter: blur(18px);
+  background: rgba(14, 22, 33, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 28px;
+  box-shadow: 0 18px 60px rgba(4, 10, 20, 0.35);
+  margin: 0 auto;
+  max-width: 460px;
+  padding: 34px;
+  width: 100%;
+}
+
+.eyebrow {
+  color: #f9c784;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.2rem;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+
+h1,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(2.2rem, 4vw, 3.3rem);
+  line-height: 0.95;
+}
+
+.lede {
+  color: #c2ccda;
+  font-family: "Segoe UI", sans-serif;
+  line-height: 1.5;
+  margin-top: 14px;
+}
+
+form {
+  display: grid;
+  gap: 14px;
+  margin-top: 26px;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+}
+
+label span {
+  color: #f9c784;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+}
+
+input {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  color: #fff8eb;
+  padding: 12px 14px;
+}
+
+input.invalid {
+  border-color: rgba(255, 120, 120, 0.72);
+}
+
+.field-error,
+.error {
+  color: #ffd5d5;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 0.84rem;
+}
+
+.error {
+  background: rgba(182, 55, 55, 0.2);
+  border: 1px solid rgba(255, 120, 120, 0.32);
+  border-radius: 14px;
+  margin-top: 18px;
+  padding: 12px 14px;
+}
+
+button {
+  background: linear-gradient(135deg, #f08a4b, #eec643);
+  border: 0;
+  border-radius: 999px;
+  color: #171717;
+  cursor: pointer;
+  font-family: "Segoe UI", sans-serif;
+  font-weight: 700;
+  margin-top: 8px;
+  padding: 12px 18px;
+}
+
+button:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.auth-footer {
+  color: #c2ccda;
+  font-family: "Segoe UI", sans-serif;
+  margin-top: 18px;
+}
+
+.auth-footer a {
+  color: #f9c784;
+}
+
+@media (max-width: 640px) {
+  .auth-shell {
+    padding: 18px;
+  }
+
+  .auth-card {
+    padding: 24px;
+  }
+}

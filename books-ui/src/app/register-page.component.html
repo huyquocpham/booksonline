@@ -1,0 +1,40 @@
+<div class="auth-shell">
+  <section class="auth-card">
+    <p class="eyebrow">Books Online</p>
+    <h1>Create account</h1>
+    <p class="lede">Register a new operator account for the catalog and cart administration console.</p>
+
+    <p class="error" *ngIf="errorMessage()">{{ errorMessage() }}</p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <label>
+        <span>Full name</span>
+        <input type="text" formControlName="fullName" [class.invalid]="isInvalid('fullName')" placeholder="Alex Carter" />
+        <small class="field-error" *ngIf="isInvalid('fullName')">Full name is required.</small>
+      </label>
+
+      <label>
+        <span>Email</span>
+        <input type="email" formControlName="email" [class.invalid]="isInvalid('email')" placeholder="name@example.com" />
+        <small class="field-error" *ngIf="isInvalid('email')">Enter a valid email address.</small>
+      </label>
+
+      <label>
+        <span>Password</span>
+        <input type="password" formControlName="password" [class.invalid]="isInvalid('password')" placeholder="At least 8 characters" />
+        <small class="field-error" *ngIf="isInvalid('password')">Password must be at least 8 characters.</small>
+      </label>
+
+      <label>
+        <span>Confirm password</span>
+        <input type="password" formControlName="confirmPassword" [class.invalid]="isInvalid('confirmPassword') || passwordMismatch()" placeholder="Repeat the password" />
+        <small class="field-error" *ngIf="isInvalid('confirmPassword')">Confirmation is required.</small>
+        <small class="field-error" *ngIf="passwordMismatch()">Passwords do not match.</small>
+      </label>
+
+      <button type="submit" [disabled]="isSubmitting()">{{ isSubmitting() ? 'Creating account...' : 'Register' }}</button>
+    </form>
+
+    <p class="auth-footer">Already registered? <a routerLink="/login">Back to login</a></p>
+  </section>
+</div>

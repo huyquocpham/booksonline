@@ -19,6 +19,7 @@
 
     <modules>
         <module>common-events</module>
+        <module>auth-service</module>
         <module>catalog-service</module>
         <module>cart-service</module>
         <module>order-service</module>
