@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: payment-service
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:192.168.1.88}:${DB_PORT:5435}/${DB_NAME:bookstoreonline}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:All4one7!}
+  sql:
+    init:
+      mode: always
+
+server:
+  port: ${SERVER_PORT:8085}
+
+app:
+  payment:
+    stripe-secret-key: ${STRIPE_SECRET_KEY:sk_test_replace_me}
+    stripe-base-url: ${STRIPE_BASE_URL:https://api.stripe.com}
+    frontend-base-url: ${FRONTEND_BASE_URL:http://localhost:4200}
+    cart-service-base-url: ${CART_SERVICE_URL:http://localhost:8082}
+    currency: ${PAYMENT_CURRENCY:usd}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus

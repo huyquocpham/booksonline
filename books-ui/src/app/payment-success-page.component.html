@@ -1,0 +1,12 @@
+<div class="status-shell">
+  <section class="status-card">
+    <p class="eyebrow">Stripe Payment</p>
+    <h1>{{ hasError() ? 'Payment Needs Attention' : 'Payment Successful' }}</h1>
+    <p class="lede">{{ message() }}</p>
+    <p class="loading" *ngIf="isLoading()">Finalizing your order...</p>
+    <div class="actions">
+      <button type="button" (click)="backToApp()">Back to app</button>
+      <a routerLink="/app">View catalog</a>
+    </div>
+  </section>
+</div>

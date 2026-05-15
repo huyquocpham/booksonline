@@ -23,10 +23,12 @@ export interface Cart {
   totalAmount: number;
 }
 
+export const DEMO_CUSTOMER_ID = 'customer-100';
+
 @Injectable({ providedIn: 'root' })
 export class CartApi {
   private readonly http = inject(HttpClient);
-  private readonly customerId = 'customer-100';
+  private readonly customerId = DEMO_CUSTOMER_ID;
   private readonly baseUrl = `http://localhost:8082/api/carts/${this.customerId}`;
 
   getCart(): Observable<Cart> {

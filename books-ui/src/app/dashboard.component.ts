@@ -8,6 +8,7 @@ import { finalize } from 'rxjs';
 import { AuthStateService } from './auth-state.service';
 import { BookApi, BookColumnMetadata, BookRecord } from './book-api';
 import { Cart, CartApi } from './cart-api';
+import { PaymentApi } from './payment-api';
 import { ShoppingCartComponent } from './shopping-cart.component';
 
 @Component({
@@ -19,6 +20,7 @@ import { ShoppingCartComponent } from './shopping-cart.component';
 export class DashboardComponent {
   private readonly bookApi = inject(BookApi);
   private readonly cartApi = inject(CartApi);
+  private readonly paymentApi = inject(PaymentApi);
   private readonly authState = inject(AuthStateService);
   private readonly router = inject(Router);
 
@@ -196,14 +198,18 @@ export class DashboardComponent {
   protected checkoutCart(): void {
     this.cartErrorMessage.set('');
     this.isCartLoading.set(true);
-    this.cartApi.checkout()
+    this.paymentApi.createCheckoutSession()
       .pipe(finalize(() => this.isCartLoading.set(false)))
       .subscribe({
-        next: () => {
-          this.loadCart();
+        next: (session) => {
+          if (!session.url) {
+            this.cartErrorMessage.set('Stripe did not return a checkout URL.');
+            return;
+          }
+          window.location.assign(session.url);
         },
-        error: () => {
-          this.cartErrorMessage.set('Checkout failed.');
+        error: (error: HttpErrorResponse) => {
+          this.cartErrorMessage.set(this.toPaymentErrorMessage(error));
         }
       });
   }
@@ -339,5 +345,18 @@ export class DashboardComponent {
     }
 
     return null;
+  }
+
+  private toPaymentErrorMessage(error: HttpErrorResponse): string {
+    const backendMessage = this.extractBackendMessage(error.error);
+    if (backendMessage) {
+      return backendMessage;
+    }
+
+    if (error.status === 0) {
+      return 'Payment service is unreachable.';
+    }
+
+    return `Unable to start Stripe checkout (status ${error.status}).`;
   }
 }
